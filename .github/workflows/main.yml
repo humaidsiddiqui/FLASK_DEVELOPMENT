@@ -1,30 +1,31 @@
-name : Flask Deployment
+name: Flask Deployment
+
 on:
   push:
-    branches: 
+    branches:
       - main
+
 jobs:
   Deploy:
-    name : Deploy to EC2
-    runs-on: Ubuntu-latest
-    steps :
-      - name : Deploy in EC2
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name : Deploy on EC2
+      - name: Deploy on EC2
         env:
-            PRIVATE_KEY: ${{ secrets.SSH_KEY }}
-            HOTS_NAME : ${{ secrets.HOST_NAME }}
-            USER_NAME : ${{secrets.USER_NAME }}
-            
-            run: |
-              echo "$PRIVATE_KEY"  > private_key && chmod 600 private_key
-              ssh -o StrictHostKeyChecking=no -i private_key ${USERN_NAME}@${HOST_NAME} "
-              ls &&
-              cd FLASK_DEVELOPMENT/ &&
-              ls &&
-              git pull &&
-              sudo systemctl stop flask-app &&
-              sudo systemctl daemon-reload &&
-              sudo systemctl start flask-app"
+          PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+          HOST_NAME: ${{ secrets.HOST_NAME }}
+          USER_NAME: ${{ secrets.USER_NAME }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOST_NAME} "
+          ls &&
+          cd FLASK_DEVELOPMENT/ &&
+          git pull &&
+          sudo systemctl stop flask-app &&
+          sudo systemctl daemon-reload &&
+          sudo systemctl start flask-app"
+
               
