@@ -1,13 +1,17 @@
 name : Flask Deployment
 on:
   push:
-    branches: [main]
+    branches: 
+      - main
 jobs:
   Deploy:
     name : Deploy to EC2
     runs-on: Ubuntu-latest
     steps :
       - name : Deploy in EC2
+        uses: actions/checkout@v3
+
+      - name : Deploy on EC2
         env:
             PRIVATE_KEY: ${{ secrets.SSH_KEY }}
             HOTS_NAME : ${{ secrets.HOST_NAME }}
